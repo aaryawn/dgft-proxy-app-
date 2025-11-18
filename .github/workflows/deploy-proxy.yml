@@ -1,0 +1,47 @@
+name: Deploy Proxy to Linode
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'proxy-server.js'
+      - 'scripts/update-proxy.sh'
+      - '.github/workflows/deploy-proxy.yml'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  deploy:
+    name: Deploy to Linode
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to Linode
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.LINODE_HOST }}
+          username: ${{ secrets.LINODE_USER }}
+          key: ${{ secrets.LINODE_SSH_KEY }}
+          port: ${{ secrets.LINODE_SSH_PORT || 22 }}
+          script: |
+            cd /opt/dgft-proxy
+            ./scripts/update-proxy.sh || {
+              echo "Update script failed, trying direct git pull..."
+              git pull origin main
+              pm2 restart dgft-proxy
+            }
+      
+      - name: Verify deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.LINODE_HOST }}
+          username: ${{ secrets.LINODE_USER }}
+          key: ${{ secrets.LINODE_SSH_KEY }}
+          port: ${{ secrets.LINODE_SSH_PORT || 22 }}
+          script: |
+            pm2 list | grep dgft-proxy
+            pm2 logs dgft-proxy --lines 10 --nostream
+
