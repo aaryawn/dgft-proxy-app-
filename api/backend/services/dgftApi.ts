@@ -460,8 +460,7 @@ export async function fetchIRMDetails(
   }
   
   // Per DGFT API Documentation Section 5.2 and Section 3 Step 6 - Exact header format required
-  // Headers: Content-Type, accessToken, client_id, secretVal, messageID
-  // NO x-api-key header for encrypted endpoints (only getAccessToken uses it)
+  // Headers: Content-Type, accessToken, client_id, secretVal, x-api-key, messageID
   
   // Explicitly verify messageID exists before creating headers
   if (!messageID || typeof messageID !== 'string' || messageID.trim().length === 0) {
@@ -476,6 +475,7 @@ export async function fetchIRMDetails(
         'accessToken': accessToken,
         'client_id': credentials.clientId,
     'secretVal': secretVal,
+    'x-api-key': credentials.xApiKey,
     'messageID': messageID
   };
   
@@ -486,7 +486,7 @@ export async function fetchIRMDetails(
   }
   
   // Validate all required headers are present
-  const requiredHeaders = ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'messageID'];
+  const requiredHeaders = ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'x-api-key', 'messageID'];
   const missingHeaders = requiredHeaders.filter(h => !(h in headers) || !headers[h] || headers[h].trim().length === 0);
   if (missingHeaders.length > 0) {
     const error = new Error(`Missing required headers: ${missingHeaders.join(', ')}`);
@@ -513,6 +513,7 @@ export async function fetchIRMDetails(
       'accessToken': '[REDACTED]',
       'client_id': headers['client_id'],
       'secretVal': '[REDACTED]',
+      'x-api-key': '[REDACTED]',
       'messageID': headers['messageID']
     },
     bodyStructure: {
@@ -561,9 +562,10 @@ export async function fetchIRMDetails(
           'accessToken': '[REDACTED]',
           'client_id': headers['client_id'],
           'secretVal': '[REDACTED]',
+          'x-api-key': '[REDACTED]',
           'messageID': headers['messageID'] // Show actual value
         },
-        requiredHeaders: ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'messageID'],
+        requiredHeaders: ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'x-api-key', 'messageID'],
         allRequiredPresent: requiredHeaders.every(h => h in headers && headers[h] && headers[h].trim().length > 0)
       });
       
@@ -953,6 +955,7 @@ export async function fetchORMDetails(
         'accessToken': accessToken,
         'client_id': credentials.clientId,
       'secretVal': secretVal,
+      'x-api-key': credentials.xApiKey,
       'messageID': messageID
     };
     
@@ -963,7 +966,7 @@ export async function fetchORMDetails(
     }
     
     // Validate all required headers are present
-    const requiredHeaders = ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'messageID'];
+    const requiredHeaders = ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'x-api-key', 'messageID'];
     const missingHeaders = requiredHeaders.filter(h => !(h in headers) || !headers[h] || headers[h].trim().length === 0);
     if (missingHeaders.length > 0) {
       const error = new Error(`Missing required headers: ${missingHeaders.join(', ')}`);
@@ -994,6 +997,7 @@ export async function fetchORMDetails(
       'accessToken': accessToken,
       'client_id': credentials.clientId,
       'secretVal': secretVal,
+      'x-api-key': credentials.xApiKey,
       'messageID': messageID
     };
     
@@ -1249,6 +1253,7 @@ export async function pushIRMToGenEBRC(
       'accessToken': accessToken,
       'client_id': credentials.clientId,
       'secretVal': secretVal,
+      'x-api-key': credentials.xApiKey,
       'messageID': messageID
     };
     
@@ -1470,6 +1475,7 @@ export async function getRequestStatus(
         'accessToken': accessToken,
         'client_id': credentials.clientId,
       'secretVal': secretVal,
+      'x-api-key': credentials.xApiKey,
       'messageID': messageID
     };
     
@@ -1480,7 +1486,7 @@ export async function getRequestStatus(
     }
     
     // Validate all required headers are present
-    const requiredHeaders = ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'messageID'];
+    const requiredHeaders = ['Content-Type', 'accessToken', 'client_id', 'secretVal', 'x-api-key', 'messageID'];
     const missingHeaders = requiredHeaders.filter(h => !(h in headers) || !headers[h] || headers[h].trim().length === 0);
     if (missingHeaders.length > 0) {
       const error = new Error(`Missing required headers: ${missingHeaders.join(', ')}`);
@@ -1511,6 +1517,7 @@ export async function getRequestStatus(
       'accessToken': accessToken,
       'client_id': credentials.clientId,
       'secretVal': secretVal,
+      'x-api-key': credentials.xApiKey,
       'messageID': messageID
     };
     
