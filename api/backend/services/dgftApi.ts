@@ -132,7 +132,7 @@ import {
   logApiError,
   logInfo,
   logWarn
-} from '../utils/logger';
+} from '../utils/logger.js';
 
 // Use proxy if DGFT_PROXY_URL is set, otherwise direct connection
 const DGFT_PROXY_URL = process.env.DGFT_PROXY_URL || '';
@@ -211,7 +211,7 @@ export async function getAccessToken(credentials: DGFTCredentials): Promise<Acce
   }
   
   // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-  const { encryptClientSecret } = await import('../lib/dgftCrypto');
+  const { encryptClientSecret } = await import('../lib/dgftCrypto.js');
   
   // Encrypt client secret with error handling
   let encryptedClientSecret: string;
@@ -379,7 +379,7 @@ export async function fetchIRMDetails(
   const url = `${API_BASE_URL}/fetchIRMDetails`;
   
   // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto');
+  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto.js');
   
   const { payload, secretVal, secretKey } = await prepareEncryptedPayload(
     request,
@@ -858,7 +858,7 @@ export async function fetchIRMDetails(
     logInfo('🔓 Decrypting IRM response', { requestId });
     
     // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-    const { decryptResponse } = await import('../lib/dgftCrypto');
+    const { decryptResponse } = await import('../lib/dgftCrypto.js');
     
     const decryptedData = await decryptResponse(
       encryptedResponse.data,
@@ -895,7 +895,7 @@ export async function fetchORMDetails(
   const url = `${API_BASE_URL}/fetchORMDetails`;
   
   // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto');
+  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto.js');
   
   const { payload, secretVal, secretKey } = await prepareEncryptedPayload(
     request,
@@ -1115,7 +1115,7 @@ export async function fetchORMDetails(
     logInfo('🔓 Decrypting ORM response', { requestId });
     
     // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-    const { decryptResponse } = await import('../lib/dgftCrypto');
+    const { decryptResponse } = await import('../lib/dgftCrypto.js');
     
     const decryptedData = await decryptResponse(
       encryptedResponse.data,
@@ -1152,7 +1152,7 @@ export async function pushIRMToGenEBRC(
   const url = `${API_BASE_URL}/pushIRMToGenEBRC`;
   
   // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto');
+  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto.js');
   
   const { payload, secretVal, secretKey } = await prepareEncryptedPayload(
     request,
@@ -1371,7 +1371,7 @@ export async function pushIRMToGenEBRC(
     logInfo('🔓 Decrypting eBRC generation response', { requestId: request.requestId });
     
     // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-    const { decryptResponse } = await import('../lib/dgftCrypto');
+    const { decryptResponse } = await import('../lib/dgftCrypto.js');
     
     const decryptedData = await decryptResponse(
       encryptedResponse.data,
@@ -1418,7 +1418,7 @@ export async function getRequestStatus(
   const url = `${API_BASE_URL}/getRequestStatus`;
   
   // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto');
+  const { prepareEncryptedPayload } = await import('../lib/dgftCrypto.js');
   
   const { payload, secretVal, secretKey } = await prepareEncryptedPayload(
     request,
@@ -1635,7 +1635,7 @@ export async function getRequestStatus(
     logInfo('🔓 Decrypting status response', { requestId });
     
     // Lazy-load crypto function to prevent FUNCTION_INVOCATION_FAILED
-    const { decryptResponse } = await import('../lib/dgftCrypto');
+    const { decryptResponse } = await import('../lib/dgftCrypto.js');
     
     const decryptedData = await decryptResponse(
       encryptedResponse.data,
