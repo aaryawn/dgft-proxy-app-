@@ -1,5 +1,8 @@
 {
-  "buildCommand": "echo 'API routes auto-detected'",
-  "outputDirectory": "."
+  "functions": {
+    "api/**/*.{ts,js}": {
+      "runtime": "@vercel/node@3"
+    }
+  }
 }
 
