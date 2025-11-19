@@ -22,22 +22,10 @@ const server = http.createServer((req, res) => {
 
   console.log(`[${new Date().toISOString()}] Proxying ${req.method} ${targetPath} -> ${targetUrl}`);
 
-  // Reconstruct headers from rawHeaders to preserve exact casing
-  // rawHeaders is an array: [key1, value1, key2, value2, ...]
-  const headers = {};
-  for (let i = 0; i < req.rawHeaders.length; i += 2) {
-    const key = req.rawHeaders[i];
-    const value = req.rawHeaders[i + 1];
-    // Skip host header
-    if (key.toLowerCase() !== 'host') {
-      headers[key] = value;
-    }
-  }
-
   // Forward all headers with preserved casing
+  // Use setHeader() on request object to preserve exact casing
   const options = {
     method: req.method,
-    headers: headers,
   };
 
   const proxyReq = https.request(targetUrl, options, (proxyRes) => {
@@ -47,6 +35,16 @@ const server = http.createServer((req, res) => {
     // Pipe response
     proxyRes.pipe(res);
   });
+
+  // Set headers manually to preserve exact casing (Node.js lowercases headers in options object)
+  for (let i = 0; i < req.rawHeaders.length; i += 2) {
+    const key = req.rawHeaders[i];
+    const value = req.rawHeaders[i + 1];
+    // Skip host header
+    if (key.toLowerCase() !== 'host') {
+      proxyReq.setHeader(key, value);
+    }
+  }
 
   proxyReq.on('error', (err) => {
     console.error(`Proxy error: ${err.message}`);
