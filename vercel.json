@@ -1,0 +1,5 @@
+{
+  "buildCommand": "echo 'API routes auto-detected'",
+  "outputDirectory": "."
+}
+
