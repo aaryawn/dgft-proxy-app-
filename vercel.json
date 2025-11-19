@@ -1,11 +1,6 @@
 {
-  "functions": {
-    "api/**/*.[tj]s": {
-      "runtime": "nodejs20.x"
-    }
-  },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1.js" }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
 
